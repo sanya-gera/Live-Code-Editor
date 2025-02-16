@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        body{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+        }
+        .left{
+            height: 100%;
+            flex-basis: 50%;
+            display: flex;
+            flex-direction: column;
+        }
+        .right{
+            background-color: black;
+            height: 100%;
+            flex-basis: 50%;
+        }
+        .content{
+            flex-basis: 33%;
+            gap: 10px;
+        }
+        .left .content label{
+            display: block;
+            background-color: black;
+            color: white;
+            padding: 10px 0px;
+            padding-left: 5px;
+            border: 2px solid white;
+        }
+        .left .content textarea{
+            display: block;
+            height: 90%;
+            width: 100%;
+            outline: none;
+            border: none;
+            padding-left: 5px;
+            padding-top: 5px;
+            background-color: black;
+            color: white;
+        }
+        .right label{
+            background-color: black;
+            display: block;
+            color: white;
+            padding: 10px 0px;
+            padding-left: 5px;
+            border: 2px solid white;
+        }
+        .right iframe{
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            border: 2px solid black;
+            height: 90%;
+            background-color: beige;
+        }
+    </style>
+</head>
+<body>
+    <div class="left">
+        <div class="content">
+            <label>HTML</label>
+            <textarea></textarea>
+        </div>
+        <div class="content">
+            <label>CSS</label>
+            <textarea></textarea>
+        </div>
+        <div class="content">
+            <label>JS</label>
+            <textarea></textarea>
+        </div>
+    </div>
+    <div class="right">
+        <label>OUTPUT</label>
+        <iframe id="output"></iframe>
+    </div>
+</body>
+<script>
+    let output = document.querySelector("#output");
+    
+    //for html
+    //output.contentDocument.body.innerHTML = "<h1>Welcome</h1>";
+
+    //for css
+    //output.contentDocument.head.innerHTML = "<style>h1{color:pink}</style>";
+
+    //for javascript
+    //output.contentWindow.eval("let a=10; let b=20; alert(a+b);")
+
+    let allInputs = document.querySelectorAll(".left textarea");
+    let htmlCode, cssCode, jsCode="";
+    allInputs.forEach((ele, idx) => {
+        ele.addEventListener("keyup", ()=>{
+            if(idx==0){
+                htmlCode = ele.value;
+            }if(idx==1){
+                cssCode = ele.value;
+            }if(idx==2){
+                jsCode = ele.value;
+            }
+            output.contentDocument.body.innerHTML = htmlCode;
+            output.contentDocument.head.innerHTML = `<style> ${cssCode} </style>`;
+            output.contentWindow.eval(jsCode);
+        })
+    });
+
+</script>
+</html>
